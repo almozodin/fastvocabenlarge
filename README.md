@@ -6,20 +6,26 @@ The long-term goal is to combine AI and etymology to make memorizing English voc
 
 ## What is included
 
-- Static, dependency-free web app
+- Next.js App Router application shell
+- TypeScript project structure
+- Tailwind CSS entrypoint
 - Responsive word-card interface
 - Mock card queue
 - Reserved areas for AI notes and etymology
-- Ready to deploy on Vercel, GitHub Pages, Netlify, or any static host
+- Ready to deploy on Vercel
 
 ## Local preview
 
-Open `index.html` in a browser.
-
-For a local server:
+Install dependencies:
 
 ```bash
-python3 -m http.server 3000
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
 ```
 
 Then visit:
@@ -27,6 +33,22 @@ Then visit:
 ```txt
 http://localhost:3000
 ```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+Lint the project:
+
+```bash
+npm run lint
+```
+
+## Architecture
+
+See `docs/architecture.md`.
 
 ## Next steps
 
