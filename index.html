@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Fast Vocab Enlarge is a minimal word-card learning interface prepared for future AI and etymology content."
+    />
+    <title>Fast Vocab Enlarge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar" aria-label="Main navigation">
+        <a class="brand" href="#" aria-label="Fast Vocab Enlarge home">
+          <span class="brand-mark">F</span>
+          <span>Fast Vocab</span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#card">Card</a>
+          <a href="#queue">Queue</a>
+          <a href="#future">AI</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="page-title">
+          <div class="hero-copy">
+            <p class="eyebrow">Minimal word-card workspace</p>
+            <h1 id="page-title">A quiet place to grow vocabulary.</h1>
+            <p class="hero-text">
+              先把卡片体验、信息层级和未来 AI/词源入口搭好。内容可以慢慢长出来，架构先保持清爽。
+            </p>
+          </div>
+          <div class="hero-panel" aria-label="Today overview">
+            <div>
+              <span class="metric-label">Today</span>
+              <strong class="metric-value">0</strong>
+              <span class="metric-caption">cards scheduled</span>
+            </div>
+            <div>
+              <span class="metric-label">Mode</span>
+              <strong class="metric-value compact">Draft</strong>
+              <span class="metric-caption">content-ready shell</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="workspace" aria-label="Word card workspace">
+          <aside class="queue-panel" id="queue" aria-labelledby="queue-title">
+            <div class="panel-header">
+              <h2 id="queue-title">Queue</h2>
+              <span class="count-pill" id="queue-count">3</span>
+            </div>
+            <div class="queue-list" id="queue-list"></div>
+          </aside>
+
+          <section class="card-stage" id="card" aria-live="polite">
+            <article class="word-card">
+              <div class="card-topline">
+                <span class="tag">Word Card</span>
+                <span class="card-index" id="card-index">1 / 3</span>
+              </div>
+
+              <div class="word-head">
+                <h2 id="word">origin</h2>
+                <button class="sound-button" type="button" aria-label="Play pronunciation">
+                  <span aria-hidden="true">♪</span>
+                </button>
+              </div>
+              <p class="phonetic" id="phonetic">/ˈɔːrɪdʒɪn/</p>
+
+              <dl class="word-details">
+                <div>
+                  <dt>Meaning</dt>
+                  <dd id="meaning">起源；来源</dd>
+                </div>
+                <div>
+                  <dt>Example</dt>
+                  <dd id="example">The origin of the word is Latin.</dd>
+                </div>
+                <div>
+                  <dt>Etymology</dt>
+                  <dd id="etymology">预留给词源内容。</dd>
+                </div>
+                <div>
+                  <dt>AI Note</dt>
+                  <dd id="ai-note">预留给后续 AI API 生成的解释、联想和例句。</dd>
+                </div>
+              </dl>
+
+              <div class="card-actions" aria-label="Learning response">
+                <button class="response secondary" type="button" data-response="again">不认识</button>
+                <button class="response secondary" type="button" data-response="hard">模糊</button>
+                <button class="response primary" type="button" data-response="known">熟悉</button>
+              </div>
+            </article>
+          </section>
+
+          <aside class="future-panel" id="future" aria-labelledby="future-title">
+            <div class="panel-header">
+              <h2 id="future-title">Later</h2>
+            </div>
+            <ul class="future-list">
+              <li>
+                <span>AI API</span>
+                <small>Generate definitions and memory hooks</small>
+              </li>
+              <li>
+                <span>Etymology</span>
+                <small>Attach roots, prefixes, and origin notes</small>
+              </li>
+              <li>
+                <span>Storage</span>
+                <small>Save custom cards and review history</small>
+              </li>
+            </ul>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script src="assets/app.js" defer></script>
+  </body>
+</html>
