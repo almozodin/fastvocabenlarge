@@ -19,6 +19,11 @@ The first goal is to keep the card experience stable while giving the project a 
 - TypeScript
 - Tailwind CSS
 - ESLint
+- Prisma
+- PostgreSQL
+- Auth.js
+- Zod
+- Sentry
 
 This mirrors the lightweight core used across mature open-source Next.js starters without bringing in full SaaS features too early.
 
@@ -35,8 +40,13 @@ components/
   site-header.tsx
   word-card-workspace.tsx
 lib/
+  ai/               AI provider boundary
+  auth/             Session and role guards
   site-config.ts    Product name, metadata, navigation
   word-cards.ts     Temporary local card data
+prisma/
+  schema.prisma     PostgreSQL schema
+  seed.ts           Starter seed data
 docs/
   architecture.md
 ```

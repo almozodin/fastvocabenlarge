@@ -9,6 +9,12 @@ The long-term goal is to combine AI and etymology to make memorizing English voc
 - Next.js App Router application shell
 - TypeScript project structure
 - Tailwind CSS entrypoint
+- Prisma/PostgreSQL backend schema
+- Auth.js GitHub OAuth scaffold
+- API route skeleton for words, cards, progress, AI jobs, imports, and users
+- Admin and dashboard route shells
+- GitHub Actions CI
+- Sentry initialization
 - Responsive word-card interface
 - Mock card queue
 - Reserved areas for AI notes and etymology
@@ -49,6 +55,11 @@ npm run lint
 ## Architecture
 
 See `docs/architecture.md`.
+
+Backend and deployment setup:
+
+- `docs/backend-platform.md`
+- `docs/deployment.md`
 
 ## Next steps
 
