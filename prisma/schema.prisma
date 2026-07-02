@@ -1,0 +1,308 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum ContentStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum FamiliarityRating {
+  UNKNOWN
+  AGAIN
+  HARD
+  KNOWN
+  MASTERED
+}
+
+enum ReviewStatus {
+  NEW
+  LEARNING
+  REVIEWING
+  MASTERED
+  SUSPENDED
+}
+
+enum AiJobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum AiJobType {
+  WORD_CARD
+  ETYMOLOGY
+  EXAMPLE_SENTENCE
+  MEMORY_HOOK
+}
+
+enum ImportStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts         Account[]
+  sessions         Session[]
+  wordsCreated     Word[]             @relation("WordCreatedBy")
+  wordBooksCreated WordBook[]         @relation("WordBookCreatedBy")
+  progress         UserWordProgress[]
+  studySessions    StudySession[]
+  reviewLogs       ReviewLog[]
+  aiJobs           AiGenerationJob[]
+  imports          ImportBatch[]
+  auditLogs        AuditLog[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Word {
+  id          String        @id @default(cuid())
+  term        String
+  language    String        @default("en")
+  phonetic    String?
+  source      String?
+  status      ContentStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  createdById String?
+
+  createdBy     User?              @relation("WordCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  cards         WordCard[]
+  etymology     EtymologyEntry?
+  bookItems     WordBookItem[]
+  userProgress  UserWordProgress[]
+  reviewLogs    ReviewLog[]
+  aiJobs        AiGenerationJob[]
+
+  @@unique([term, language])
+  @@index([status])
+}
+
+model WordCard {
+  id               String        @id @default(cuid())
+  wordId           String
+  meaning          String?
+  example          String?
+  etymologySummary String?
+  aiNote           String?
+  status           ContentStatus @default(DRAFT)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  word Word @relation(fields: [wordId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([wordId])
+}
+
+model WordBook {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String?
+  status      ContentStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  createdById String?
+
+  createdBy User?          @relation("WordBookCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  items     WordBookItem[]
+}
+
+model WordBookItem {
+  id        String   @id @default(cuid())
+  bookId    String
+  wordId    String
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  book WordBook @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  word Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
+
+  @@unique([bookId, wordId])
+  @@index([bookId, position])
+}
+
+model UserWordProgress {
+  id             String            @id @default(cuid())
+  userId         String
+  wordId         String
+  rating         FamiliarityRating @default(UNKNOWN)
+  reviewStatus   ReviewStatus      @default(NEW)
+  seenCount      Int               @default(0)
+  correctCount   Int               @default(0)
+  lastReviewedAt DateTime?
+  nextReviewAt   DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  word Word @relation(fields: [wordId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, wordId])
+  @@index([userId, reviewStatus])
+  @@index([nextReviewAt])
+}
+
+model StudySession {
+  id           String    @id @default(cuid())
+  userId       String
+  startedAt    DateTime  @default(now())
+  endedAt      DateTime?
+  newCount     Int       @default(0)
+  reviewCount  Int       @default(0)
+  responseData Json?
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviewLogs ReviewLog[]
+
+  @@index([userId, startedAt])
+}
+
+model ReviewLog {
+  id             String            @id @default(cuid())
+  userId         String
+  wordId         String
+  studySessionId String?
+  rating         FamiliarityRating
+  responseMs     Int?
+  createdAt      DateTime          @default(now())
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  word         Word          @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  studySession StudySession? @relation(fields: [studySessionId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([wordId, createdAt])
+}
+
+model EtymologyEntry {
+  id          String        @id @default(cuid())
+  wordId      String        @unique
+  summary     String?
+  roots       Json?
+  source      String?
+  status      ContentStatus @default(DRAFT)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  word Word @relation(fields: [wordId], references: [id], onDelete: Cascade)
+}
+
+model AiGenerationJob {
+  id          String      @id @default(cuid())
+  type        AiJobType
+  status      AiJobStatus @default(QUEUED)
+  provider    String?
+  model       String?
+  wordId      String?
+  createdById String?
+  input       Json
+  output      Json?
+  error       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  startedAt   DateTime?
+  finishedAt  DateTime?
+
+  word      Word? @relation(fields: [wordId], references: [id], onDelete: SetNull)
+  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([wordId])
+}
+
+model ImportBatch {
+  id          String       @id @default(cuid())
+  label       String
+  status      ImportStatus @default(QUEUED)
+  source      String?
+  rowCount    Int          @default(0)
+  error       String?
+  createdById String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  action    String
+  target    String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId, createdAt])
+  @@index([action])
+}

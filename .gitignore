@@ -7,3 +7,4 @@ out/
 dist/
 .vercel/
 coverage/
+tsconfig.tsbuildinfo
