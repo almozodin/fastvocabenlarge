@@ -49,11 +49,17 @@ prisma/
   seed.ts           Starter seed data
 docs/
   architecture.md
+  backend-platform.md
+  deployment.md
+  scaling.md
 ```
 
 ## Next modules
 
 - `lib/ai/` for AI API prompts and response shaping
+- `lib/server/services/` for backend workflows
+- `lib/server/repositories/` for database access
+- `app/api/v1/` for versioned API routes
 - `lib/etymology/` for word-origin data providers
 - `lib/storage/` for local storage first, then database-backed persistence
 - `app/api/` once server-side API routes are needed

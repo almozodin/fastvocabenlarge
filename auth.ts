@@ -3,15 +3,14 @@ import GitHub from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import { prisma } from "@/lib/db";
-
-const hasGitHubProvider = Boolean(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET);
+import { hasGitHubOAuth } from "@/lib/server/config/env";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "database",
   },
-  providers: hasGitHubProvider
+  providers: hasGitHubOAuth()
     ? [
         GitHub({
           clientId: process.env.GITHUB_CLIENT_ID,
