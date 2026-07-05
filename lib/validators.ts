@@ -27,3 +27,19 @@ export const aiJobCreateSchema = z.object({
   wordId: z.string().trim().min(1).optional(),
   input: z.record(z.string(), z.unknown()).default({}),
 });
+
+export const wordBookCreateSchema = z.object({
+  title: z.string().trim().min(1).max(160),
+  slug: z
+    .string()
+    .trim()
+    .min(1)
+    .max(180)
+    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  description: z.string().trim().max(1000).optional(),
+});
+
+export const importBatchCreateSchema = z.object({
+  label: z.string().trim().min(1).max(180).default("Untitled import"),
+  source: z.string().trim().max(240).optional(),
+});

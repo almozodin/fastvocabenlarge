@@ -140,7 +140,9 @@ model Word {
   aiJobs        AiGenerationJob[]
 
   @@unique([term, language])
+  @@index([language, status])
   @@index([status])
+  @@index([createdAt])
 }
 
 model WordCard {
@@ -157,7 +159,9 @@ model WordCard {
   word Word @relation(fields: [wordId], references: [id], onDelete: Cascade)
 
   @@index([status])
+  @@index([wordId, status])
   @@index([wordId])
+  @@index([createdAt])
 }
 
 model WordBook {
@@ -172,6 +176,9 @@ model WordBook {
 
   createdBy User?          @relation("WordBookCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
   items     WordBookItem[]
+
+  @@index([status])
+  @@index([createdAt])
 }
 
 model WordBookItem {
@@ -206,6 +213,7 @@ model UserWordProgress {
 
   @@unique([userId, wordId])
   @@index([userId, reviewStatus])
+  @@index([userId, updatedAt])
   @@index([nextReviewAt])
 }
 
@@ -222,6 +230,7 @@ model StudySession {
   reviewLogs ReviewLog[]
 
   @@index([userId, startedAt])
+  @@index([startedAt])
 }
 
 model ReviewLog {
@@ -238,6 +247,7 @@ model ReviewLog {
   studySession StudySession? @relation(fields: [studySessionId], references: [id], onDelete: SetNull)
 
   @@index([userId, createdAt])
+  @@index([userId, wordId, createdAt])
   @@index([wordId, createdAt])
 }
 
@@ -252,6 +262,9 @@ model EtymologyEntry {
   updatedAt   DateTime      @updatedAt
 
   word Word @relation(fields: [wordId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([createdAt])
 }
 
 model AiGenerationJob {
@@ -275,6 +288,7 @@ model AiGenerationJob {
 
   @@index([status, createdAt])
   @@index([wordId])
+  @@index([createdById, createdAt])
 }
 
 model ImportBatch {
@@ -291,6 +305,7 @@ model ImportBatch {
   createdBy User? @relation(fields: [createdById], references: [id], onDelete: SetNull)
 
   @@index([status, createdAt])
+  @@index([createdById, createdAt])
 }
 
 model AuditLog {

@@ -1,11 +1,3 @@
-import { ok } from "@/lib/http";
-
 export const runtime = "nodejs";
 
-export function GET() {
-  return ok({
-    status: "ok",
-    service: "fastvocabenlarge",
-    timestamp: new Date().toISOString(),
-  });
-}
+export { GET } from "@/app/api/health/live/route";

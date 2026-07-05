@@ -239,7 +239,13 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Session_sessionToken_key" ON "Session"("sessionToken");
 
 -- CreateIndex
+CREATE INDEX "Word_language_status_idx" ON "Word"("language", "status");
+
+-- CreateIndex
 CREATE INDEX "Word_status_idx" ON "Word"("status");
+
+-- CreateIndex
+CREATE INDEX "Word_createdAt_idx" ON "Word"("createdAt");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Word_term_language_key" ON "Word"("term", "language");
@@ -248,10 +254,22 @@ CREATE UNIQUE INDEX "Word_term_language_key" ON "Word"("term", "language");
 CREATE INDEX "WordCard_status_idx" ON "WordCard"("status");
 
 -- CreateIndex
+CREATE INDEX "WordCard_wordId_status_idx" ON "WordCard"("wordId", "status");
+
+-- CreateIndex
 CREATE INDEX "WordCard_wordId_idx" ON "WordCard"("wordId");
 
 -- CreateIndex
+CREATE INDEX "WordCard_createdAt_idx" ON "WordCard"("createdAt");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "WordBook_slug_key" ON "WordBook"("slug");
+
+-- CreateIndex
+CREATE INDEX "WordBook_status_idx" ON "WordBook"("status");
+
+-- CreateIndex
+CREATE INDEX "WordBook_createdAt_idx" ON "WordBook"("createdAt");
 
 -- CreateIndex
 CREATE INDEX "WordBookItem_bookId_position_idx" ON "WordBookItem"("bookId", "position");
@@ -263,6 +281,9 @@ CREATE UNIQUE INDEX "WordBookItem_bookId_wordId_key" ON "WordBookItem"("bookId",
 CREATE INDEX "UserWordProgress_userId_reviewStatus_idx" ON "UserWordProgress"("userId", "reviewStatus");
 
 -- CreateIndex
+CREATE INDEX "UserWordProgress_userId_updatedAt_idx" ON "UserWordProgress"("userId", "updatedAt");
+
+-- CreateIndex
 CREATE INDEX "UserWordProgress_nextReviewAt_idx" ON "UserWordProgress"("nextReviewAt");
 
 -- CreateIndex
@@ -272,7 +293,13 @@ CREATE UNIQUE INDEX "UserWordProgress_userId_wordId_key" ON "UserWordProgress"("
 CREATE INDEX "StudySession_userId_startedAt_idx" ON "StudySession"("userId", "startedAt");
 
 -- CreateIndex
+CREATE INDEX "StudySession_startedAt_idx" ON "StudySession"("startedAt");
+
+-- CreateIndex
 CREATE INDEX "ReviewLog_userId_createdAt_idx" ON "ReviewLog"("userId", "createdAt");
+
+-- CreateIndex
+CREATE INDEX "ReviewLog_userId_wordId_createdAt_idx" ON "ReviewLog"("userId", "wordId", "createdAt");
 
 -- CreateIndex
 CREATE INDEX "ReviewLog_wordId_createdAt_idx" ON "ReviewLog"("wordId", "createdAt");
@@ -281,13 +308,25 @@ CREATE INDEX "ReviewLog_wordId_createdAt_idx" ON "ReviewLog"("wordId", "createdA
 CREATE UNIQUE INDEX "EtymologyEntry_wordId_key" ON "EtymologyEntry"("wordId");
 
 -- CreateIndex
+CREATE INDEX "EtymologyEntry_status_idx" ON "EtymologyEntry"("status");
+
+-- CreateIndex
+CREATE INDEX "EtymologyEntry_createdAt_idx" ON "EtymologyEntry"("createdAt");
+
+-- CreateIndex
 CREATE INDEX "AiGenerationJob_status_createdAt_idx" ON "AiGenerationJob"("status", "createdAt");
 
 -- CreateIndex
 CREATE INDEX "AiGenerationJob_wordId_idx" ON "AiGenerationJob"("wordId");
 
 -- CreateIndex
+CREATE INDEX "AiGenerationJob_createdById_createdAt_idx" ON "AiGenerationJob"("createdById", "createdAt");
+
+-- CreateIndex
 CREATE INDEX "ImportBatch_status_createdAt_idx" ON "ImportBatch"("status", "createdAt");
+
+-- CreateIndex
+CREATE INDEX "ImportBatch_createdById_createdAt_idx" ON "ImportBatch"("createdById", "createdAt");
 
 -- CreateIndex
 CREATE INDEX "AuditLog_actorId_createdAt_idx" ON "AuditLog"("actorId", "createdAt");

@@ -20,6 +20,8 @@ Copy the pooled production connection string into:
 DATABASE_URL
 ```
 
+Use a pooled connection string, not a single direct database connection string, for Vercel serverless API routes.
+
 ## 3. Configure Auth.js
 
 Create a GitHub OAuth App:

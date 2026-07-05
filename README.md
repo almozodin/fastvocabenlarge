@@ -12,6 +12,7 @@ The long-term goal is to combine AI and etymology to make memorizing English voc
 - Prisma/PostgreSQL backend schema
 - Auth.js GitHub OAuth scaffold
 - API route skeleton for words, cards, progress, AI jobs, imports, and users
+- Versioned `/api/v1/*` backend architecture with service/repository layers
 - Admin and dashboard route shells
 - GitHub Actions CI
 - Sentry initialization
@@ -60,6 +61,7 @@ Backend and deployment setup:
 
 - `docs/backend-platform.md`
 - `docs/deployment.md`
+- `docs/scaling.md`
 
 ## Next steps
 

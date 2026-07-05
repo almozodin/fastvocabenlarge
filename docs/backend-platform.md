@@ -8,8 +8,12 @@ This phase intentionally excludes vocabulary methodology and editorial content. 
 - Auth.js GitHub OAuth integration
 - User roles: `USER`, `ADMIN`, `SUPER_ADMIN`
 - Admin API guards
+- Versioned `/api/v1/*` route surface
+- Service and repository layers
 - Zod request validation
 - Standard JSON error format
+- Request IDs and response timing metadata
+- Bounded pagination for list endpoints
 - Study sessions and word progress data model
 - AI generation job queue model
 - Import batch model
@@ -21,6 +25,8 @@ This phase intentionally excludes vocabulary methodology and editorial content. 
 
 ```txt
 GET  /api/health
+GET  /api/health/live
+GET  /api/health/ready
 GET  /api/words
 POST /api/words
 GET  /api/cards
@@ -38,6 +44,8 @@ GET  /api/admin/imports
 POST /api/admin/imports
 ```
 
+Canonical versions live under `/api/v1/*`; the shorter `/api/*` paths are compatibility exports.
+
 ## Manual owner setup
 
 The owner still needs to create and configure:
@@ -47,3 +55,5 @@ The owner still needs to create and configure:
 - GitHub OAuth App
 - Sentry project
 - OpenAI API key when content generation starts
+
+See `docs/scaling.md` for the 10,000 visits/day operating model.
